@@ -1,0 +1,12 @@
+db:
+  image: postgres:9.4
+  environment:
+    - POSTGRES_PASSWORD=gunnery
+    - POSTGRES_USER=gunnery
+
+gunnery:
+  build: .
+  ports:
+    - "80:80"
+  links:
+    - db

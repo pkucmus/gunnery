@@ -1,0 +1,18 @@
+CELERY_BIN="/var/gunnery/virtualenv/production/bin/celery"
+
+CELERY_APP="gunnery"
+
+CELERYD_CHDIR="/var/gunnery/gunnery"
+
+CELERYD_OPTS="--concurrency=2"
+
+CELERYD_LOG_FILE="/var/gunnery/log/celery.%N.log"
+CELERYD_PID_FILE="/var/gunnery/run/celery.%N.pid"
+
+CELERYD_USER="celery"
+CELERYD_GROUP="celery"
+
+CELERY_CREATE_DIRS=1
+
+export DJANGO_SETTINGS_MODULE="gunnery.settings.production"
+export SECRET_KEY="408372hg857k274hm8xrf2v7f4yvk9d8"
