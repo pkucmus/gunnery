@@ -4,9 +4,26 @@ db:
     - POSTGRES_PASSWORD=gunnery
     - POSTGRES_USER=gunnery
 
-gunnery:
+rabbitmq:
+  image: rabbitmq
+  environment:
+    - RABBITMQ_PASS=gunnery
+  ports:
+    - "5672:5672"  # we forward this port because it's useful for debugging
+    - "15672:15672"  # here, we can access rabbitmq management plugin
+
+worker:
+  image: celery
+  links:
+    - db:db
+    - rabbitmq:rabbit
+
+app:
   build: .
   ports:
     - "80:80"
+  volumes:
+    - etc/entrypoint.sh:/entrypoint.sh
   links:
-    - db
+    - db:db
+    - worker:celery

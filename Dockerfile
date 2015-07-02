@@ -1,42 +1,36 @@
 FROM python:2.7
 
-RUN apt-get update && apt-get install -y rabbitmq-server nginx
+MAINTAINER Paweł Kucmus <pkucmus@gmail.com>
 
-RUN mkdir -p /var/gunery/
+RUN apt-get update && apt-get install -y nginx postgresql-client
+
+COPY etc/nginx /etc/nginx/conf.d
+
+
+RUN mkdir -p /var/gunnery/
+RUN mkdir -p /var/gunnery/log/
+RUN mkdir -p /var/gunnery/run/
 ADD . /var/gunnery/
 
-# RUN pip install -r /var/gunnery/requirements/production.txt
+RUN pip install -r /var/gunnery/requirements/docker.txt
 
 WORKDIR /var/gunnery/gunnery/
 
 ENV DJANGO_SETTINGS_MODULE="gunnery.settings.production"
 ENV SECRET_KEY="408372hg857k274hm8xrf2v7f4yvk9d8"
 
-# RUN python manage.py syncdb
-# RUN python manage.py migrate
-# RUN python manage.py collectstatic
-# RUN python manage.py createsuperuser
-
-RUN useradd celery
-
-RUN cp ../etc/celery.initd /etc/init.d/
-RUN cp ../etc/celery.default /etc/default/
-
-# RUN service celeryd start
-
-RUN cp ../etc/uwsgi /etc/init.d/
-RUN chmod u+x /etc/init.d/uwsgi
-
 RUN mkdir -p /etc/uwsgi/apps-enabled
 RUN cp ../etc/uwsgi.ini /etc/uwsgi/apps-enabled/gunnery.ini
 
-# RUN service uwsgi start
+COPY etc/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-RUN rm -rf /etc/nginx/sites-enabled/default
-RUN cp ../etc/nginx.django.conf /etc/nginx/sites-enabled/gunnery
+RUN rm /etc/nginx/sites-enabled/default
 
-RUN service nginx reload
+RUN /etc/init.d/nginx restart
 
-COPY etc/entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT ['/entrypoint.sh']
+EXPOSE 8000
+
+CMD ["uwsgi", "--emperor", "/etc/uwsgi/apps-enabled/gunnery.ini"]
