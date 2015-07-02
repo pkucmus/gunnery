@@ -106,8 +106,7 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "core.context_processors.sidebar",
 )
 
-# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-CELERY_RESULT_BACKEND = 'db+postgresql://gunnery:gunnery@db/gunnery'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 

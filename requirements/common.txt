@@ -12,12 +12,13 @@ django-pgcrypto==1.1.1
 ecdsa==0.11
 factory-boy==2.3.1
 kombu==3.0.19
-paramiko==1.14.0
+paramiko==1.15.1
 psycopg2==2.5.3
 pycrypto==2.6.1
 pytz==2014.4
 six==1.7.2
 sqlparse==0.1.11
+celery==3.1.7
 uWSGI==2.0.5.1
 wsgiref==0.1.2
 git+https://github.com/Eyjafjallajokull/django-timezone-field.git@develop#egg=django-timezone-field

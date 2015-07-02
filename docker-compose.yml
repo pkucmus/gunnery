@@ -12,18 +12,31 @@ rabbitmq:
     - "5672:5672"  # we forward this port because it's useful for debugging
     - "15672:15672"  # here, we can access rabbitmq management plugin
 
-worker:
-  image: celery
-  links:
-    - db:db
-    - rabbitmq:rabbit
+# worker:
+#   image: celery
+#   volumes:
+#     - .:/home/user
+#   links:
+#     - db:db
+#     - rabbitmq:rabbit
+
+# worker:
+#   build: .
+#   environment:
+#     - C_FORCE_ROOT=1
+#   command: python manage.py celery worker
+#   links:
+#     - db:db
+#     - rabbitmq:rabbit
 
 app:
   build: .
   ports:
     - "80:80"
   volumes:
-    - etc/entrypoint.sh:/entrypoint.sh
+    - secure:/var/gunnery/secure
+  environment:
+    - C_FORCE_ROOT=1
   links:
     - db:db
-    - worker:celery
+    - rabbitmq:rabbit
