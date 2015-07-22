@@ -28,3 +28,13 @@ INTERNAL_IPS = glob_list(['127.0.0.1', '10.0.*.*'])
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'gunnery',
+        'USER': 'gunnery',
+        'PASSWORD': 'gunnery',
+        'HOST': 'db',
+    }
+}
